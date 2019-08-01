@@ -1,0 +1,14 @@
+spring:
+    profiles:
+        active: @profileId@
+
+    http:
+        encoding:
+            force: true
+            charset: UTF-8
+            force-request: true
+            force-response: true
+
+# maven-resources-plugin会将文件拷贝到当前目录
+logging.config: classpath:log4j2.xml
+ehcache.config: classpath:ehcache.xml

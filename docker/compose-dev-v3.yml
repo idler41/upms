@@ -1,0 +1,59 @@
+version: '3.5'
+
+services:
+    upms-server-dev:
+        build: ../
+        image: idler41/upms-server-dev:1.0
+        container_name: upms-server-dev
+        hostname: upms-server
+        restart: always
+        cap_add:
+            - SYS_PTRACE
+        environment:
+            HTTP_PORT: 8080
+            CATALINA_OPTS: '-Dcom.sun.management.jmxremote
+                            -Djava.rmi.server.hostname=10.0.0.72
+                            -Dcom.sun.management.jmxremote.port=9090
+                            -Dcom.sun.management.jmxremote.rmi.port=9090 -Dcom.sun.management.jmxremote.ssl=false
+                            -Dcom.sun.management.jmxremote.authenticate=false'
+            JAVA_OPTS: '
+                       -Djava.security.egd=file:/dev/./urandom
+                       -Duser.timezone=GMT+08
+                       -server
+                       -Xss512k
+                       -Xms1344M
+                       -Xmx1344M
+                       -Xmn448M
+                       -XX:MetaspaceSize=192M
+                       -XX:MaxMetaspaceSize=192M
+                       -XX:+DisableExplicitGC
+                       -XX:+UseParNewGC
+                       -XX:+PrintGCDateStamps
+                       -XX:+PrintGCTimeStamps
+                       -XX:+PrintGCDetails
+                       -XX:+PrintGCApplicationStoppedTime
+                       -XX:ErrorFile=/home/tomcat/apache-tomcat/logs/hs_err_pid%p.log
+                       -Xloggc:/home/tomcat/apache-tomcat/logs/gc.log
+                       -XX:+HeapDumpOnOutOfMemoryError
+                       -XX:HeapDumpPath=/home/tomcat/apache-tomcat/logs'
+        expose:
+            - 8080
+            - 8005
+        ports:
+            - 9090:9090
+        volumes:
+            - type: volume
+              source: upms-server-logs-dev
+              target: /home/tomcat/apache-tomcat/logs
+
+        networks:
+            net-dev:
+                aliases: 
+                    - upms.server.com
+
+networks:
+    net-dev:
+        name: net-dev
+volumes:
+    upms-server-logs-dev:
+        name: upms-server-logs-dev

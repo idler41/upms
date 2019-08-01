@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Configuration>
+
+    <Properties>
+        <Property name="LOG_HOME">${env:CATALINA_HOME}/logs</Property>
+        <property name="LOG_PATTERN">
+            %d{HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n
+        </property>
+    </Properties>
+
+    <Appenders>
+        <RollingRandomAccessFile name="AppLogFile" fileName="${sys:LOG_HOME}/upms.log"
+                                 immediateFlush="false"
+                                 filePattern="${sys:LOG_HOME}/upms-%d{yyyy-MM-dd}-%i.log.gz">
+
+            <ThresholdFilter level="all"/>
+            <PatternLayout charset="UTF-8" pattern="${LOG_PATTERN}"/>
+
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100M"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+
+            <DefaultRolloverStrategy compressionLevel="9" max="7" />
+
+        </RollingRandomAccessFile>
+
+        <Async name="AsyncAppender">
+            <AppenderRef ref="AppLogFile"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info" includeLocation="false">
+            <appender-ref ref="AsyncAppender"/>
+        </Root>
+
+        <AsyncLogger name="org.apache.shiro.cache.ehcache.EhCache" level="trace"/>
+
+        <AsyncLogger name="org.springframework.cache" level="trace" includeLocation="false"/>
+
+        <AsyncLogger name="com.lfx.upms.mapper" level="debug" includeLocation="false"/>
+
+        <AsyncLogger name="springfox.documentation.spring" level="warn"/>
+
+    </Loggers>
+
+</Configuration>

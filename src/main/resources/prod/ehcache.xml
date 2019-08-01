@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="es" updateCheck="false" dynamicConfig="false">
+
+    <diskStore path="/usr/local/tomcat/logs"/>
+
+    <defaultCache
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="0"
+            diskPersistent="false"/>
+
+    <!-- 验证码缓存 -->
+    <cache name="checkCodeCache"
+           timeToLiveSeconds="300"
+           maxEntriesLocalHeap="2000">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <!-- 权限缓存 -->
+    <cache name="shiroAuthorizationCache"
+           maxEntriesLocalHeap="2000">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <!-- session缓存 -->
+    <cache name="shiroSessionCache"
+           maxEntriesLocalHeap="2000"
+           timeToIdleSeconds="1800"
+           diskPersistent="true"
+           maxBytesLocalDisk="50M">
+    </cache>
+
+    <!-- 通过用户id查询session的缓存 -->
+    <cache name="kickoutCache"
+           maxEntriesLocalHeap="2000"
+           timeToIdleSeconds="1800"
+           diskPersistent="true"
+           maxBytesLocalDisk="50M">
+    </cache>
+
+</ehcache>

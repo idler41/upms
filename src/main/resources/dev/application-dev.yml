@@ -1,0 +1,73 @@
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://mysql-dev:3306/upms?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+        hikari:
+            pool-name: hikariPool
+            connection-test-query: SELECT 1 FROM DUAL
+            maximum-pool-size: 200
+            connection-timeout: 10000
+            minimum-idle: 20
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+
+    cache:
+        cache-names: defaultCache
+        type: caffeine
+        caffeine.spec: maximumSize=500,expireAfterAccess=600s
+
+mybatis:
+    mapper-locations: classpath:**/*Mapper.xml
+    configuration:
+        log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+
+shiro:
+    loginUrl: /login
+
+    userNativeSessionManager: true
+    sessionManager:
+        cookie:
+            httpOnly: false
+        validation:
+            scheduler.enabled: true
+            interval: 3600000
+        globalSessionTimeout: 1800000
+
+    custom:
+        kickoutable: true
+        cache:
+            authorization-name: shiroAuthorizationCache
+            session-name: shiroSessionCache
+            kickout-name: kickoutCache
+        filterChain:
+            - /swagger-ui.html=anon
+            - /swagger-resources/**=anon
+            - /v2/api-docs=anon
+            - /webjars/springfox-swagger-ui/**=anon
+            - /login=captchaMatchFilter,restLogin
+            - /logout=restLogout
+            - /captcha/get=captchaApiFilter
+            - /user/register=anon
+            - /**=user
+
+captcha:
+    enabled: true
+    showLoginFailedTimes: 5
+    img.format: jpg
+    cache.name: checkCodeCache
+    request.name: checkCode

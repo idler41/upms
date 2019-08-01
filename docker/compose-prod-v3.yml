@@ -1,0 +1,48 @@
+version: '3.5'
+
+services:
+    upms-server:
+        build: ../
+        image: idler41/upms-server:1.0
+        container_name: upms-server
+        hostname: upms.server.com
+        restart: always
+        environment:
+            HTTP_PORT: 8080
+            JAVA_OPTS: '
+                        -Djava.security.egd=file:/dev/./urandom
+                        -server
+                        -Duser.timezone=GMT+08
+                        -Xss512k
+                        -Xms672M
+                        -Xmx672M
+                        -Xmn224M
+                        -XX:MetaspaceSize=96M
+                        -XX:MaxMetaspaceSize=96M
+                        -XX:+DisableExplicitGC
+                        -XX:+UseParNewGC
+                        -XX:+PrintGCDateStamps
+                        -XX:+PrintGCTimeStamps
+                        -XX:+PrintGCDetails
+                        -XX:+PrintGCApplicationStoppedTime
+                        -XX:ErrorFile=/usr/local/tomcat/logs/hs_err_pid%p.log
+                        -Xloggc:/usr/local/tomcat/logs/gc.log
+                        -XX:+HeapDumpOnOutOfMemoryError
+                        -XX:HeapDumpPath=/usr/local/tomcat/logs/logs'
+        expose:
+            - 8080
+            - 8005
+        volumes:
+            - type: volume
+              source: upms-server-logs
+              target: /usr/local/tomcat/logs
+        networks:
+            net-upms:
+                aliases:
+                    - upms.server.com
+networks:
+    net-upms:
+        name: net-upms
+volumes:
+    upms-server-logs:
+        name: upms-server-logs
