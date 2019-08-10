@@ -39,6 +39,8 @@
             <appender-ref ref="AsyncAppender"/>
         </Root>
 
+<!--        <AsyncLogger name="com.lfx.upms.shiro.session" level="debug" includeLocation="false"/>-->
+
         <AsyncLogger name="org.apache.shiro.cache.ehcache.EhCache" level="trace"/>
 
         <AsyncLogger name="org.springframework.cache" level="trace" includeLocation="false"/>

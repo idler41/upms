@@ -71,6 +71,7 @@ shiro:
             - /logout=restLogout
             - /captcha/get=captchaApiFilter
             - /user/register=anon
+#            - /**=anon
             - /**=user
 
 captcha:

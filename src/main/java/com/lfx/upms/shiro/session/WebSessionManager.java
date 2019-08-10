@@ -2,11 +2,13 @@ package com.lfx.upms.shiro.session;
 
 import com.lfx.upms.util.WebConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.SessionKey;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.session.mgt.WebSessionKey;
+import org.apache.shiro.web.subject.WebSubject;
 
 import javax.servlet.ServletRequest;
 import java.io.Serializable;
@@ -17,6 +19,19 @@ import java.io.Serializable;
  */
 @Slf4j
 public class WebSessionManager extends DefaultWebSessionManager {
+
+    @Override
+    protected void onChange(Session session) {
+        super.onChange(session);
+
+        WebSubject webSubject = (WebSubject) SecurityUtils.getSubject();
+        ServletRequest request = webSubject.getServletRequest();
+        String sessionId = (String) session.getId();
+        if (log.isDebugEnabled()) {
+            log.debug("remove session from request {}", sessionId);
+        }
+        request.removeAttribute(sessionId);
+    }
 
     @Override
     protected Session retrieveSession(SessionKey sessionKey) throws UnknownSessionException {

@@ -3,6 +3,7 @@ package com.lfx.upms.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lfx.upms.service.PermissionService;
 import com.lfx.upms.service.UserService;
+import com.lfx.upms.shiro.aop.NoSubjectPermissionAnnotationHandler;
 import com.lfx.upms.shiro.filter.CaptchaApiFilter;
 import com.lfx.upms.shiro.filter.CaptchaMatchFilter;
 import com.lfx.upms.shiro.filter.RestLoginFilter;
@@ -17,13 +18,17 @@ import com.lfx.upms.shiro.session.WebSessionManager;
 import net.sf.ehcache.Cache;
 import org.apache.shiro.authc.AuthenticationListener;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
+import org.apache.shiro.authz.aop.AuthorizingAnnotationMethodInterceptor;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.SimpleSessionFactory;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
+import org.apache.shiro.spring.security.interceptor.AopAllianceAnnotationsAuthorizingMethodInterceptor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
@@ -39,6 +44,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.Filter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -137,9 +143,8 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         ModularRealmAuthenticator authenticator = (ModularRealmAuthenticator) securityManager.getAuthenticator();
 
-        // 主要: sessionListener必须放在ehCacheKickoutListener前面
-        // 因为ehCacheKickoutListener需要从cache中读取userId，而userId是在sessionListener中设置的
-        List<AuthenticationListener> listenerList = Arrays.asList(captchaListener, sessionListener, ehCacheKickoutListener);
+        // 注意: 必须严格保证各个Listener的顺序，因为ehCacheKickoutListener需要从cache中读取userId，而userId是在sessionListener中设置的
+        List<AuthenticationListener> listenerList = Arrays.asList(sessionListener, captchaListener, ehCacheKickoutListener);
         authenticator.setAuthenticationListeners(listenerList);
         securityManager.setRealm(realm);
         securityManager.setSessionManager(sessionManager);
@@ -226,4 +231,15 @@ public class ShiroConfig {
         return cookie;
     }
 
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+        AopAllianceAnnotationsAuthorizingMethodInterceptor advice = (AopAllianceAnnotationsAuthorizingMethodInterceptor) advisor.getAdvice();
+        ArrayList<AuthorizingAnnotationMethodInterceptor> methodInterceptors = (ArrayList<AuthorizingAnnotationMethodInterceptor>) advice.getMethodInterceptors();
+        AuthorizingAnnotationMethodInterceptor permissionAnnotationMethodInterceptor = methodInterceptors.get(1);
+        // 替换注解权限Handler
+        permissionAnnotationMethodInterceptor.setHandler(new NoSubjectPermissionAnnotationHandler());
+        advisor.setSecurityManager(securityManager);
+        return advisor;
+    }
 }
