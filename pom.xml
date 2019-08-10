@@ -36,6 +36,9 @@
 
         <shiro.version>1.4.0</shiro.version>
         <kaptcha.version>2.3.0</kaptcha.version>
+
+        <vjtools.version>1.0.8</vjtools.version>
+
     </properties>
 
     <dependencies>
@@ -148,6 +151,12 @@
         <!-- 密码加密 end -->
 
         <!-- 工具类 start -->
+
+        <dependency>
+            <groupId>com.vip.vjtools</groupId>
+            <artifactId>vjkit</artifactId>
+            <version>${vjtools.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.code</groupId>

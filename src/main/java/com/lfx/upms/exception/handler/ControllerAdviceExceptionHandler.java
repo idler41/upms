@@ -39,7 +39,8 @@ public class ControllerAdviceExceptionHandler extends ResponseEntityExceptionHan
     @ExceptionHandler(AuthorizationException.class)
     public WebResult<String> authorization(AuthorizationException ex, HttpServletRequest request) {
         if (log.isWarnEnabled()) {
-            log.warn("权限异常警告,客户端: [{}],请求URL: [{}],异常信息: [{}]",
+            // 如果需要调试，可通过 ExceptionUtil.stackTraceText(ex) 查看异常栈信息
+            log.warn("客户端【{}】,请求URL【{}】, 权限异常警告: {}",
                     request.getRemoteHost(), request.getRequestURI(), ex);
         }
         return ResultBuilder.buildFailed(ResultEnum.NO_PERMISSION);
