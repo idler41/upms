@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {DirrerentValueValidator.class})
+@Constraint(validatedBy = {DifferentValueValidator.class})
 public @interface DifferentValue {
 
     String message() default "";

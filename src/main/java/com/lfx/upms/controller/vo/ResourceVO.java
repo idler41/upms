@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2019-05-07 17:10:25
  */
 @Data
-@DifferentValue(message = "id与parentId不能相同", filed = "id", matchFileds = {"parentId"}, groups = UpdateSelectiveGroup.class)
+@DifferentValue(message = "id与parentId值不能相同", filed = "id", matchFileds = {"parentId"}, groups = UpdateSelectiveGroup.class)
 public class ResourceVO implements Serializable {
 
     @Null(groups = InsertGroup.class)

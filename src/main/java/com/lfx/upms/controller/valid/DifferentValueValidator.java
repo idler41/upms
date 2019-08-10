@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
  * @author <a href="mailto:idler41@163.com">idler41</a>
  * @date 2019-07-31 10:09
  */
-public class DirrerentValueValidator implements ConstraintValidator<DifferentValue, Object> {
+public class DifferentValueValidator implements ConstraintValidator<DifferentValue, Object> {
 
     private String fieldName;
     private String[] matchFieldNames;
