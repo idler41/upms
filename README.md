@@ -29,7 +29,7 @@ shiro中以session对象的形式存储在缓存中。用户登录成功后，sh
 shiro的session存储在redis中有以下缺点：
 
 - 修改session中的一个字段，需要加载整个session对象。不能高效使用redis中hash命令
-- SimpleSession对象有startTimestamp、stopTimestamp、lastAccessTime等字段与session过期有关，shiro中每次filter拦截都会更新session对象中的字段。redis中存储session只需要expire操作即可管理session过期功能
+- SimpleSession对象有startTimestamp、stopTimestamp、lastAccessTime等字段，shiro中的filter每次拦截请求都会更新这些字段用于管理session过期。而redis中存储session只需要expire操作就可管理session过期功能
 
 
 ### 权限管理
@@ -38,7 +38,7 @@ shiro以spring aop方式实现权限验证。AopAllianceAnnotationsAuthorizingMe
 
 PermissionAnnotationHandler调用subject.checkPermission实现权限验证。
 
-shiro的session管理在redis中存在缺陷 => 希望redis存储session时，不使用shiro的用户认证模块 => 权限验证时，subject将得不到正确解析
+shiro的session管理在redis中存在缺陷 => 不希望shiro管理session => 不使用shiro认证模块 => 权限验证时，subject将得不到正确解析
 
 按照以上逻辑，本系统自定义了NoSubjectPermissionAnnotationHandler，直接通过securityManager.checkPermissions的方式进行权限验证。
 
