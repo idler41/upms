@@ -34,8 +34,8 @@ public class DifferentValueValidator implements ConstraintValidator<DifferentVal
             return true;
         }
         for (String matchFieldName : matchFieldNames) {
-            Field matchField = ReflectionUtils.findField(value.getClass(), fieldName);
-            ReflectionUtils.makeAccessible(field);
+            Field matchField = ReflectionUtils.findField(value.getClass(), matchFieldName);
+            ReflectionUtils.makeAccessible(matchField);
             Object matchVal = ReflectionUtils.getField(matchField, value);
 
             if (val.equals(matchVal)) {
