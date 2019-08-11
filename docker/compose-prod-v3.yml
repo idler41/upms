@@ -11,24 +11,21 @@ services:
             HTTP_PORT: 8080
             JAVA_OPTS: '
                         -Djava.security.egd=file:/dev/./urandom
-                        -server
                         -Duser.timezone=GMT+08
+                        -server
                         -Xss512k
                         -Xms672M
                         -Xmx672M
                         -Xmn224M
                         -XX:MetaspaceSize=96M
                         -XX:MaxMetaspaceSize=96M
-                        -XX:+DisableExplicitGC
-                        -XX:+UseParNewGC
                         -XX:+PrintGCDateStamps
                         -XX:+PrintGCTimeStamps
                         -XX:+PrintGCDetails
-                        -XX:+PrintGCApplicationStoppedTime
                         -XX:ErrorFile=/usr/local/tomcat/logs/hs_err_pid%p.log
                         -Xloggc:/usr/local/tomcat/logs/gc.log
                         -XX:+HeapDumpOnOutOfMemoryError
-                        -XX:HeapDumpPath=/usr/local/tomcat/logs/logs'
+                        -XX:HeapDumpPath=/usr/local/tomcat/logs'
         expose:
             - 8080
             - 8005
