@@ -46,32 +46,32 @@ public class ResourceServiceImpl extends AbstractBaseService<ResourceMapper, Res
 
     @CacheEvict(value = "defaultCache", key = "'resource:tree'")
     @Override
-    public int deleteByPrimaryKey(Long aLong) {
-        return super.deleteByPrimaryKey(aLong);
+    public void deleteByPrimaryKey(Long aLong) {
+        super.deleteByPrimaryKey(aLong);
     }
 
     @CacheEvict(value = "defaultCache", key = "'resource:tree'")
     @Override
-    public int insert(Resource record) {
-        return super.insert(record);
+    public void insert(Resource record) {
+        super.insert(record);
     }
 
     @CacheEvict(value = "defaultCache", key = "'resource:tree'")
     @Override
-    public int insertSelective(Resource record) {
-        return super.insertSelective(record);
+    public void insertSelective(Resource record) {
+        super.insertSelective(record);
     }
 
     @CacheEvict(value = "defaultCache", key = "'resource:tree'")
     @Override
-    public int updateByPrimaryKeySelective(Resource record) {
-        return super.updateByPrimaryKeySelective(record);
+    public void updateByPrimaryKeySelective(Resource record) {
+        super.updateByPrimaryKeySelective(record);
     }
 
     @CacheEvict(value = "defaultCache", key = "'resource:tree'")
     @Override
-    public int updateByPrimaryKey(Resource record) {
-        return super.updateByPrimaryKey(record);
+    public void updateByPrimaryKey(Resource record) {
+        super.updateByPrimaryKey(record);
     }
 
     @CacheEvict(value = "defaultCache", key = "'resource:tree'")

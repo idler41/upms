@@ -28,23 +28,23 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<R, E, ID>, R
     }
 
     @Override
-    public int deleteByExample(E example){
+    public void deleteByExample(E example) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public int deleteByPrimaryKey(ID id) {
-        return mapper.deleteByPrimaryKey(id);
+    public void deleteByPrimaryKey(ID id) {
+        mapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public int insert(R record) {
-        return mapper.insert(record);
+    public void insert(R record) {
+        mapper.insert(record);
     }
 
     @Override
-    public int insertSelective(R record) {
-        return mapper.insertSelective(record);
+    public void insertSelective(R record) {
+        mapper.insertSelective(record);
     }
 
     @Override
@@ -58,13 +58,13 @@ public abstract class AbstractBaseService<Mapper extends BaseMapper<R, E, ID>, R
     }
 
     @Override
-    public int updateByPrimaryKeySelective(R record) {
-        return mapper.updateByPrimaryKeySelective(record);
+    public void updateByPrimaryKeySelective(R record) {
+        mapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
-    public int updateByPrimaryKey(R record) {
-        return mapper.updateByPrimaryKey(record);
+    public void updateByPrimaryKey(R record) {
+        mapper.updateByPrimaryKey(record);
     }
 
     @Override

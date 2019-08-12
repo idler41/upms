@@ -48,32 +48,32 @@ public class UserServiceImpl extends AbstractBaseService<UserMapper, User, UserE
 
     @CacheEvict(value = "defaultCache", key = "'user:' + #id")
     @Override
-    public int deleteByPrimaryKey(Long id) {
-        return super.deleteByPrimaryKey(id);
+    public void deleteByPrimaryKey(Long id) {
+        super.deleteByPrimaryKey(id);
     }
 
     @CacheEvict(value = "defaultCache", key = "'user:' + #record.id", condition = "#record.id!=null")
     @Override
-    public int insert(User record) {
-        return super.insert(record);
+    public void insert(User record) {
+        super.insert(record);
     }
 
     @CacheEvict(value = "defaultCache", key = "'user:' + #record.id", condition = "#record.id!=null")
     @Override
-    public int insertSelective(User record) {
-        return super.insertSelective(record);
+    public void insertSelective(User record) {
+        super.insertSelective(record);
     }
 
     @CacheEvict(value = "defaultCache", key = "'user:' + #record.id", condition = "#record.id!=null")
     @Override
-    public int updateByPrimaryKeySelective(User record) {
-        return super.updateByPrimaryKeySelective(record);
+    public void updateByPrimaryKeySelective(User record) {
+        super.updateByPrimaryKeySelective(record);
     }
 
     @CacheEvict(value = "defaultCache", key = "'user:' + #record.id", condition = "#record.id!=null")
     @Override
-    public int updateByPrimaryKey(User record) {
-        return super.updateByPrimaryKey(record);
+    public void updateByPrimaryKey(User record) {
+        super.updateByPrimaryKey(record);
     }
 
     @Override

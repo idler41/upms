@@ -30,8 +30,8 @@ public class PermissionServiceImpl extends AbstractBaseService<PermissionMapper,
     }
 
     @Override
-    public int deleteByExample(PermissionExample example) {
-        return mapper.deleteByExample(example);
+    public void deleteByExample(PermissionExample example) {
+        mapper.deleteByExample(example);
     }
 
     @Override

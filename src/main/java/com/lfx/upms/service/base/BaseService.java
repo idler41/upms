@@ -19,34 +19,30 @@ public interface BaseService<R, E, ID> {
      * 删除所有符合过滤条件的数据
      *
      * @param example 过滤条件对象
-     * @return 影响行数
      * @throws UnsupportedOperationException 默认实现不支持该操作
      */
-    int deleteByExample(E example) throws UnsupportedOperationException;
+    void deleteByExample(E example) throws UnsupportedOperationException;
 
     /**
      * 根据主键，删除数据。
      *
      * @param id 主键
-     * @return 影响行数
      */
-    int deleteByPrimaryKey(ID id);
+    void deleteByPrimaryKey(ID id);
 
     /**
      * 插入一条数据(可插入值为null的字段)
      *
      * @param record 待插入数据对象
-     * @return 影响行数
      */
-    int insert(R record);
+    void insert(R record);
 
     /**
      * 插入一条数据(不插入值为null的字段)
      *
      * @param record 待插入数据对象
-     * @return 影响行数
      */
-    int insertSelective(R record);
+    void insertSelective(R record);
 
     /**
      * 查询所有符合过滤条件的数据
@@ -68,17 +64,15 @@ public interface BaseService<R, E, ID> {
      * 根据主键，更新一条数据(不更新值为null的字段)
      *
      * @param record 待更新数据对象
-     * @return 影响行数
      */
-    int updateByPrimaryKeySelective(R record);
+    void updateByPrimaryKeySelective(R record);
 
     /**
      * 根据主键，更新一条数据(可更新值为null的字段)
      *
      * @param record 待更新数据对象
-     * @return 影响行数
      */
-    int updateByPrimaryKey(R record);
+    void updateByPrimaryKey(R record);
 
     /**
      * 分页查询所有符合过滤条件的数据

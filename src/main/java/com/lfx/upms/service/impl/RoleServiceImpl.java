@@ -28,8 +28,8 @@ public class RoleServiceImpl extends AbstractBaseService<RoleMapper, Role, RoleE
     }
 
     @Override
-    public int deleteByExample(RoleExample example) {
-        return mapper.deleteByExample(example);
+    public void deleteByExample(RoleExample example) {
+        mapper.deleteByExample(example);
     }
 
     @Override
