@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `upms_role` (
 CREATE TABLE IF NOT EXISTS `upms_permission` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 
-  `permission_key` VARCHAR(256) NOT NULL COMMENT '权限标识',
+  `permission_key` VARCHAR(255) NOT NULL COMMENT '权限标识',
   `label` VARCHAR(64) NOT NULL COMMENT '权限标签',
 
   `create_user` BIGINT(20) UNSIGNED NOT NULL COMMENT '创建人',

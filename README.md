@@ -20,6 +20,66 @@ upms是一个前后端分离的系统。前端基于vue-element-admin二次开�
 
 缓存中存储了userId => sessionId，ssessionId => session对象的kv值，用于实现单用户登陆功能。本系统用ehcache的读写锁方式，保证了并发情况下单用户登录的正常处理逻辑。
 
+```java
+/**
+ * @author <a href="mailto:idler41@163.com">idler41</a>
+ * @date 2019-04-27 18:35
+ */
+@Slf4j
+public class EhCacheKickoutListener implements AuthenticationListener {
+
+    private final boolean kickoutEnable;
+
+    private final Ehcache sessionCache;
+
+    private final Ehcache kickoutCache;
+
+    public EhCacheKickoutListener(boolean kickoutEnable, Ehcache sessionCache, Ehcache kickoutCache) {
+        this.kickoutEnable = kickoutEnable;
+        this.sessionCache = sessionCache;
+        this.kickoutCache = kickoutCache;
+    }
+
+    @Override
+    public void onSuccess(AuthenticationToken token, AuthenticationInfo info) {
+        if (!kickoutEnable) {
+            return;
+        }
+
+        WebSubject subject = (WebSubject) SecurityUtils.getSubject();
+        HttpServletRequest request = (HttpServletRequest) subject.getServletRequest();
+        Long userId = (Long) request.getAttribute(WebConstants.CURRENT_USER_ID);
+        kickoutCache.acquireWriteLockOnKey(userId);
+        try {
+            // 1. 查询上一次登录的sessionId，如果有值则根据该sessionId删除缓存中的session
+            Element element = kickoutCache.get(userId);
+            if (element != null) {
+                String sessionId = (String) element.getObjectValue();
+                if (sessionId != null) {
+                    sessionCache.remove(sessionId);
+                }
+            }
+
+            // 2. 放入新的sessionId
+            kickoutCache.put(new Element(userId, subject.getSession().getId()));
+        } finally {
+            kickoutCache.releaseWriteLockOnKey(userId);
+        }
+    }
+
+    @Override
+    public void onFailure(AuthenticationToken token, AuthenticationException ae) {
+        // do nothing
+    }
+
+    @Override
+    public void onLogout(PrincipalCollection principals) {
+        // do nothing
+    }
+
+}
+```
+
 ### session管理
 
 shiro中以session对象的形式存储在缓存中。用户登录成功后，shiro会频繁的从缓存中加载session对象读取对象中的数据。假如session不是存储在本地，频繁的网络操作会影响系统性能。
