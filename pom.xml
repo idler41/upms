@@ -34,7 +34,7 @@
         <cglib.version>3.2.10</cglib.version>
         <objenesis.version>2.5.1</objenesis.version>
 
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.5.0</shiro.version>
         <kaptcha.version>2.3.0</kaptcha.version>
 
         <vjtools.version>1.0.8</vjtools.version>
