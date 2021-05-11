@@ -163,16 +163,15 @@ upms将前端权限关联的元素统称为资源。如：侧边栏的目录树�
 
 ### 角色授权
 
-<img src="screenshots/grant-role.gif" />
+![avatar](./screenshots/grant-role.gif)
 
 ### 用户授权
 
-<img src="screenshots/grant-user.gif" />
+![avatar](./screenshots/grant-user.gif)
 
 ### 重新登录
 
-<img src="screenshots/relogin.gif" />
-
+![avatar](./screenshots/relogin.gif)
 
 ## 在线体验
 
